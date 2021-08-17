@@ -32,6 +32,13 @@ connection.once("open", () => {
   console.log("MongoDB database connection establish successfully.");
 });
 
+// Creating endspoints
+const exerciseRouter = require("./routes/exercises");
+const userRouter = require("./routes/users");
+
+app.use("/exercises", exerciseRouter);
+app.use("/users", userRouter);
+
 // start the server
 app.listen(port, () => {
   console.log(`MERN Tracker is running on https://localhost:${port}`);
