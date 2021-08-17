@@ -6,7 +6,7 @@ let User = require("../models/user.model");
 
 // first endpoint to get all users
 router.route("/").get((req, res) => {
-  // mongose will automatically get all users
+  // mongose will automatically get all users from database
   User.find()
     // returning a promise in a json format
     .then((users) => res.json(users))
