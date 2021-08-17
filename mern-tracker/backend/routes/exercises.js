@@ -39,5 +39,41 @@ router.route("/add").post((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+// Add the CRUD endpoints to the router
+// Get the exercise by id variable created automatically by mongoose
+router.route("/:id").get((req, res) => {
+  Exercise.findById(req.params.id)
+    .then((exercise) => res.json(exercise))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+// delete the exercise by id
+router.route("/:id").delete((req, res) => {
+  Exercise.findByIdAndRemove(req.params.id)
+    .then((exercise) => res.json("Exercise deleted!"))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+// update the exercise by id
+router.route("/update/:id").post((req, res) => {
+  // find current exercise by id
+  // pass the parameter to the findById method from the url
+  Exercise.findById(req.params.id)
+    .then((exercise) => {
+      // the request body is using the json object that was sent in the route post request
+      exercise.username = req.body.username;
+      exercise.description = req.body.description;
+      exercise.duration = Number(req.body.duration);
+      exercise.date = Date.parse(req.body.date);
+
+      // save the exercise to the database with the new information
+      exercise
+        .save()
+        .then((exercise) => res.json("Exercise updated!"))
+        .catch((err) => res.status(400).json("Error: " + err));
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 // export the router
 module.exports = router;
